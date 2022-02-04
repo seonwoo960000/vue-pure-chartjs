@@ -1,5 +1,8 @@
 # vue-chartjs
 
+## Things to consider 
+- chart.js 3.7.0 is tree shakeable, so we have to import each elements and register them by using chart.js provided constructor 
+
 ## Project setup
 ```
 npm install
