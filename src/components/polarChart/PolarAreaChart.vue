@@ -1,50 +1,75 @@
 <template>
   <div>
-    <canvas id="myChart"/>
+    <canvas :id="id"/>
   </div>
 </template>
 
 <script>
-/* eslint-disable */
-// Chart.js 3.0 and upwards is tree shakeable, so we have to import and register elements
-// console 창 확인하면 편리함
 import {ArcElement, Chart, PolarAreaController, RadialLinearScale} from "chart.js";
 
 export default {
   name: "PolarChart",
   props: ['chartData'],
   mounted() {
-    Chart.register(ArcElement, PolarAreaController, RadialLinearScale)
-    const config = {
-      type: 'polarArea',
-      data: this.chartData,
-      options: {
-        responsive: true,
-        scales: {
-          r: {
-            pointLabels: {
-              display: true,
-              centerPointLabels: true,
-              font: {
-                size: 18
+    this.initializeChart()
+  },
+  watch: {
+    chartData() {
+      this.initializeChart()
+    }
+  },
+  computed: {
+    id() {
+      return `polar-area-chart-${this._uid}`
+    }
+  },
+  data: () => ({
+    myChart: null
+  }),
+  methods: {
+    initializeChart() {
+      if (!this.chartData) return
+      Chart.register(ArcElement, PolarAreaController, RadialLinearScale)
+      const config = {
+        type: 'polarArea',
+        data: this.chartData,
+        options: {
+          responsive: true,
+          scales: {
+            r: {
+              min: 0,
+              max: 5,
+              ticks: {
+                stepSize: 1,
+              },
+              pointLabels: {
+                display: true,
+                centerPointLabels: true,
+                font: {
+                  size: 12,
+                  family: "'Noto Sans KR', 'sans-serif'",
+                  weight: 600
+                }
               }
+            }
+          },
+          plugins: {
+            legend: {
+              position: 'top',
+            },
+            title: {
+              display: true,
+              text: 'Chart.js Polar Area Chart With Centered Point Labels'
             }
           }
         },
-        plugins: {
-          legend: {
-            position: 'top',
-          },
-          title: {
-            display: true,
-            text: 'Chart.js Polar Area Chart With Centered Point Labels'
-          }
-        }
-      },
+      }
+      this.myChart = new Chart(document.getElementById(this.id), config)
     }
-    new Chart(document.getElementById('myChart'), config)
+  },
+  beforeDestroy() {
+    if (this.myChart) this.myChart.destroy()
   }
-  ,
 }
 </script>
 

@@ -2,6 +2,7 @@
 
 ## Things to consider 
 - chart.js 3.7.0 is tree shakeable, so we have to import each elements and register them by using chart.js provided constructor 
+- https://www.chartjs.org/docs/latest/samples/other-charts/polar-area-center-labels.html
 
 ## Project setup
 ```
